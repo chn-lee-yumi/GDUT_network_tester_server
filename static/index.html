@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>广东工业大学网络状况（公测版）</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" id="app">
+
+    <div class="row">
+        <div class="card-body">
+            <h2>各网络出口状态</h2>
+            <p v-model="server_datas">数据更新时间：{{getLocalTime(server_datas["time"])}}</p>
+            <p v-model="server_datas">最近一分钟数据上传次数：{{server_datas["client"]}}次</p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>出口</th>
+                        <th>1分钟</th>
+                        <th>5分钟</th>
+                        <th>15分钟</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(value,key) in server_datas['data']" class="el-table__row">
+                        <td>{{key}}</td>
+                        <td>{{value["1min"][0].toFixed(1)}}ms / {{value["1min"][1].toFixed(1)}}%</td>
+                        <td>{{value["5min"][0].toFixed(1)}}ms / {{value["5min"][1].toFixed(1)}}%</td>
+                        <td>{{value["15min"][0].toFixed(1)}}ms / {{value["15min"][1].toFixed(1)}}%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="card-body">
+            <h2>工具下载</h2>
+            <p>Windows版本下载：<a href="/static/GDUT网络测试工具.exe">GDUT网络测试工具.exe</a></p>
+            <!--<p>Windows版本下载（64位，一般选这个）：<a href="/static/GDUT网络测试工具64bit.exe">GDUT网络测试工具64bit.exe</a></p>-->
+            <p>Linux版本下载：<a href="/static/Netter-Linux">Netter-Linux</a></p>
+            <p>Mac版本下载：<a href="/static/Netter-Mac">Netter-Mac</a></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="card-body">
+            <h2>关于</h2>
+            <p>1、目前学校拥有移动、联通、电信、教育网四个出口线路，本平台提供了以上出口线路以及内网（校园网出口防火墙）的延迟和丢包率数据，分别为1分钟、5分钟、15分钟的平均值，用户可以根据这些数据<strong>粗略</strong>判断校园网出口的状况。</p>
+            <p>2、四个出口线路的网络质量参考值为：<strong>延迟&lt;50ms</strong>，<strong>丢包率&lt;0.2%</strong>。</p>
+            <p>3、校园网用户可以在全校范围内运行测试工具对各出口进行延迟和丢包率测试。运行程序后会提供两个选项：<strong>单次测试</strong>和<strong>持续测试</strong>。<strong>我们鼓励用户使用持续测试，为大家持续提供可靠的数据</strong>。</p>
+            <p>4、测试结果会自动上传至本站统计，但本站仅统计并显示来自生活区的数据样本。我们确保所有上传的数据中仅包含网络测试结果，欢迎同学们协助监督。</p>
+            <p>更多相关问题点击查看<a href="https://network.gdutnic.com/FAQ" target="_blank">FAQ</a>。</p>
+            <p>GDUT网络测试工具由广工大网管队技术组开发，采用GPLv3开源协议，欢迎大家给star。</p>
+            <p>Github地址：<a href="https://github.com/gdut-network-manager/netter" target="_blank">https://github.com/gdut-network-manager/netter</a>
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">广工大网管队技术组研发。</footer>
+
+</div>
+<script type="text/javascript">
+    console.log("现在校园网运维外包给点易啦，学生网管只是做点文职工作(类似客服)。求不屌我们学生QwQ");
+    console.log("扫后台的菜鸡不用扫了，这玩意没有后台，再扫查你水表。（不知道菜鸡看不看控制台）");
+
+    function getLocalTime(t) {
+        var date = new Date(t*1000);
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = (date.getDate() < 10 ? '0'+date.getDate() : date.getDate()) + ' ';
+        h = (date.getHours() < 10 ? '0'+date.getHours() : date.getHours()) + ':';
+        m = (date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()) + ':';
+        s = date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds();
+        return Y+M+D+h+m+s;
+    }
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+           server_datas:{}
+      },
+      mounted:function (){
+        this.updateStatus();
+        this.timer = setInterval(this.updateStatus, 60000);
+      },
+      methods: {
+          updateStatus: function () {
+              var that=this;
+              axios.get('/api/status')
+                  .then(function (response) {
+                    console.log(response);
+                    that.server_datas=response["data"];
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+          }
+      }
+    })
+
+
+</script>
+<style>
+.card-body {
+    padding: 0.75rem;
+}
+.table {
+    margin-bottom: 0rem;
+}
+p {
+    margin-bottom: 0.5rem;
+}
+footer {
+    color: #666;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+
+</style>
+</body>
+</html>

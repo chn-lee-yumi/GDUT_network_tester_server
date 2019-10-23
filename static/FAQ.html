@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>广东工业大学网络状况FAQ</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" id="app">
+
+    <div class="row">
+        <div class="card-body">
+            <h2>广东工业大学网络状况FAQ</h2>
+            <h3>延迟和丢包率是什么意思？</h3>
+            <p>亲，这种问题建议您<a href="https://www.baidu.com/s?ie=utf-8&wd=%E4%B8%A2%E5%8C%85%E7%8E%87%E5%92%8C%E7%BD%91%E7%BB%9C%E5%BB%B6%E8%BF%9F%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D" target="_blank">百度</a>哦！</p>
+            <h3>为什么我的延迟/丢包率比网站上显示的平均值要高不少？</h3>
+            <p>可能的原因有：1、使用了外置USB网卡，可能有质量问题或者瓶颈；2、电脑正在下载东西；3、电脑开启了节电模式；4、网线接触不好（概率较小）。<!--5、人品不好--></p>
+            <h3>为什么“最近一分钟数据上传次数”不为0，但“数据更新时间”却不是一分钟内的？</h3>
+            <p>因为显示结果只统计来自生活区（确切地说，是学生宿舍）的数据。当上传的数据来自其他地方时，也会被记录到“最近一分钟数据上传次数”里面，但是不会进行统计，所以“数据更新时间”不会改变。除此之外，对于一些伪造的攻击数据，同样会被记录到“最近一分钟数据上传次数”里面，但是也不会进行统计。</p>
+            <h3>为什么快捷键按了之后没反应/很久才有反应？</h3>
+            <p><!--这一点爹也不大明白-->按下之后大约需要等待半分钟，或到当次测试完成后就会有反应了。原因暂时还不清楚，有能力的同学可以分析一下<a href="https://github.com/gdut-network-manager/netter/blob/master/WindowsHotKey.go" target="_blank">源代码</a>，提交PR。</p>
+            <h3>为什么服务端不开源？</h3>
+            <p>服务端包含了对数据包的筛选机制，为了防止虚假数据包攻击影响数据准确性，因此我们决定对服务端闭源。<!--（例如，网络正常时有人恶意构造数据包拉高延迟和丢包率，而网络真的出问题时又有人恶意构造数据包拉低延迟和丢包率）你可以试试，我们有日志，断网警告--></p>
+            <h3>我还有问题想问，去哪里问？</h3>
+            <p>关于本项目的问题，可以到微信公众号“广工大网管队”相应的推文底下留言，或者加入我们的<a href="https://github.com/gdut-network-manager/comeon" target="_blank">技术交流群</a>共同探讨。</p>
+            <h3>最后还是要再打个小广告</h3>
+            <p>GDUT网络测试工具由广工大网管队技术组开发，采用GPLv3开源协议，欢迎大家给star。</p>
+            <p>Github地址：<a href="https://github.com/gdut-network-manager/netter" target="_blank">https://github.com/gdut-network-manager/netter</a></p>
+        </div>
+    </div>
+
+    <footer>广工大网管队技术组研发。</footer>
+
+</div>
+<style>
+.card-body {
+    padding: 0.75rem;
+}
+.table {
+    margin-bottom: 0rem;
+}
+p {
+    margin-bottom: 0.5rem;
+}
+footer {
+    color: #666;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+
+</style>
+</body>
+</html>
